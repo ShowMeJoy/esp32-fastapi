@@ -1,6 +1,20 @@
-__pycache__/
+# IDE
+.idea/
 .vscode/
-*.pyc
+
+# Python
 __pycache__/
-.vscode/
-*.pyc
+*.py[cod]
+*.so
+.venv/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Project secrets
+/logger/secrets.h
+
+# Logs
+*.log
+

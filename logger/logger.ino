@@ -4,6 +4,7 @@
 #include <DHT.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <secrets.h>
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
@@ -15,8 +16,6 @@
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 DHT dht(DHTPIN, DHTTYPE);
 
-const char* ssid = "TP-Link_7FEE";
-const char* password = "24990073";
 const char* serverURL = "http://192.168.0.4:8000/log";
 
 void connectWiFi() {
