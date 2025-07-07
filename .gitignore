@@ -1,20 +1,25 @@
 # IDE
 .idea/
-.vscode/
+backend/.idea/
+firmware/.vscode/
 
 # Python
-__pycache__/
-*.py[cod]
-*.so
-.venv/
+backend/__pycache__/
+backend/.venv/
+backend/*.py[cod]
+backend/*.so
 
 # OS junk
 .DS_Store
 Thumbs.db
 
 # Project secrets
-/logger/secrets.h
+firmware/include/secrets.h
 
 # Logs
 *.log
 
+# PlatformIO/ESP-IDF build artefacts
+firmware/sdkconfig.esp32dev
+firmware/.cmake/
+firmware/.pio/
