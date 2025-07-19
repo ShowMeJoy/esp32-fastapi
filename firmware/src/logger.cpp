@@ -48,7 +48,7 @@ void send_data(float temp, float hum) {
             temp, hum, esp_timer_get_time()/1000);
 
     esp_http_client_config_t config = {
-        .url = "http://192.168.0.4:8000/log",
+        .url = URL,
         .event_handler = _http_event_handler};
 
     esp_http_client_handle_t client = esp_http_client_init(&config);
@@ -90,7 +90,7 @@ extern "C" void app_main(void) {
 
         float temp = dht.getTemperature();
         float hum = dht.getHumidity();
-        snprintf(buf, sizeof(buf), "T:%.2f H:%.2f", temp, hum);
+        snprintf(buf, sizeof(buf), "T:%.2f\nH:%.2f", temp, hum);
         ssd1306_print_str(0, 17, buf, false);
 
         send_data(temp, hum);
