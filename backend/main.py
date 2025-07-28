@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse  # for work with status coded
 from pydantic import BaseModel
 from typing import Optional, List   # specific types
 from sqlmodel import Field, SQLModel, create_engine, Session, select
+from datetime import datetime, UTC
 
 # uvicorn main:app --host 0.0.0.0 --port 8000
 
@@ -52,3 +53,20 @@ def get_log():
     with Session(engine) as session:
         result = session.exec(select(Measurement)).all()
         return result
+
+
+# log for reading with comfortable date format
+@app.get("/log/human/")
+def get_log_human_readable():
+    with Session(engine) as session:
+        rows = session.exec(select(Measurement)).all()
+        return [
+            {
+            "device_id": r.device_id,
+            "temperature": r.temperature,
+            "humidity": r.humidity,
+            "timestamp": r.timestamp,
+            "time": datetime.fromtimestamp(r.timestamp, UTC)
+            }
+            for r in rows
+        ]
