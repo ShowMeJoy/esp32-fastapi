@@ -1,0 +1,2 @@
+source C:/Users/LEGION/dev/esp32-fastapi/firmware/build/gdbinit/symbols
+source C:/Users/LEGION/dev/esp32-fastapi/firmware/build/gdbinit/connect
