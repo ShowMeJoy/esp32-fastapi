@@ -19,7 +19,8 @@ firmware/include/secrets.h
 # Logs
 *.log
 
-# PlatformIO/ESP-IDF build artefacts
+# ESP-IDF build artefacts
 firmware/sdkconfig.esp32dev
 firmware/.cmake/
 firmware/.pio/
+firmware/build
