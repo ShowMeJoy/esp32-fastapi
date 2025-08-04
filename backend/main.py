@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.responses import JSONResponse  # for work with status coded
 from pydantic import BaseModel
 from typing import Optional, List   # specific types
@@ -12,6 +12,8 @@ class SensorData(BaseModel):
     device_id: str = 'esp32-1'
     temperature: float
     humidity: float
+    pressure: int
+    altitude: float
     timestamp: int
 
 
@@ -20,6 +22,8 @@ class Measurement(SQLModel, table=True):
     device_id: str
     temperature: float
     humidity: float
+    pressure: int
+    altitude: float
     timestamp: int
 
 
@@ -41,17 +45,33 @@ def on_startup():
 # POST: add update
 @app.post("/submit/")
 def submit_data(measurement: Measurement):
+    if measurement.temperature > 40.0:
+        return JSONResponse(
+            status_code=400,
+            content={"error": "Overheat detected!"}
+        )
     with Session(engine) as session:
         session.add(measurement)
         session.commit()
-    return {"status": "saved"}
+    return JSONResponse(
+        status_code=201,
+        content={"status": "saved"}
+    )
 
 
-# GET: return all
+# GET /log/ - all data
+# GET /log/?device_id=esp32-1 - only from one device
+# GET /log/?since=1753700000 - since timestamp
+# GET /log/?device_id=esp32-1&since=1753700000 - both of filters
 @app.get("/log/", response_model=List[Measurement])
-def get_log():
+def get_log(device_id: Optional[str] = Query(None), since: Optional[int] = Query(None)):
     with Session(engine) as session:
-        result = session.exec(select(Measurement)).all()
+        stmt = select(Measurement)
+        if device_id:
+            stmt = stmt.where(Measurement.device_id == device_id)
+        if since:
+            stmt = stmt.where(Measurement.timestamp >= since)
+        result = session.exec(stmt).all()
         return result
 
 
@@ -70,3 +90,4 @@ def get_log_human_readable():
             }
             for r in rows
         ]
+

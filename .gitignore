@@ -8,6 +8,7 @@ backend/__pycache__/
 backend/.venv/
 backend/*.py[cod]
 backend/*.so
+backend/*.db
 
 # OS junk
 .DS_Store
